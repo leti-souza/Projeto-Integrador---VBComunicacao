@@ -1,0 +1,14 @@
+<h1>Lista de Notícias</h1>
+
+<ul>
+    {% for noticia in noticias %}
+        <li>
+            <strong>{{ noticia.titulo }}</strong><br>
+            Fonte: {{ noticia.fonte }}<br>
+            Data: {{ noticia.data }}
+        </li>
+        <hr>
+    {% endfor %}
+</ul>
+
+<a href="/home/">Voltar para Home</a>

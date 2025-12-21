@@ -1,0 +1,16 @@
+<h1>Cadastro</h1>
+
+<form method="POST" action="/cadastro/">
+
+    {% csrf_token %}
+    
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="password" name="senha" placeholder="Senha" required><br><br>
+
+    <button type="submit">Cadastra-se aqui</button>
+</form>
+
+<p>
+    Já tem conta?
+    <a href="/login/">Voltar para login</a>
+</p>
