@@ -19,7 +19,7 @@
 
 <div class="container">
 
-    {% for noticia in noticias %}
+   {% for noticia in page_obj %}
         <div class="card mb-3 shadow-sm">
             <div class="card-body">
 
@@ -39,6 +39,14 @@
                 {% else %}
                     <span class="badge bg-danger ms-2">Não confiável</span>
                 {% endif %}
+
+                {% if perms.noticias.change_noticia %}
+                <a href="{% url 'editar_noticia' noticia.id %}"
+                   class="btn btn-warning btn-sm ms-2">
+                    ✏️ Editar
+                </a>
+            {% endif %}
+
 
             </div>
         </div>

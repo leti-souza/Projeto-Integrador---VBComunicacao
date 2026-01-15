@@ -1,0 +1,18 @@
+<h1>Editar Notícia</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <input type="text" name="titulo" value="{{ noticia.titulo }}" required>
+    <input type="text" name="fonte" value="{{ noticia.fonte }}" required>
+    <input type="url" name="link" value="{{ noticia.link }}" required>
+
+    <textarea name="conteudo" required>{{ noticia.conteudo }}</textarea>
+
+    <label>
+        <input type="checkbox" name="confiavel" {% if noticia.confiavel %}checked{% endif %}>
+        Fonte confiável
+    </label>
+
+    <button type="submit">Salvar alterações</button>
+</form>

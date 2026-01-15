@@ -11,9 +11,10 @@ def login_view(request):
         )
         if user:
             login(request, user)
-            return redirect('/home/')
+            return redirect('home')  # 👈 CORRETO
         return render(request, 'usuarios/login.html', {'erro': 'Credenciais inválidas'})
     return render(request, 'usuarios/login.html')
+
 
 def cadastro_view(request):
     if request.method == 'POST':
