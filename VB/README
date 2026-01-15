@@ -1,0 +1,20 @@
+# Descrição do que foi feito nesta etapa:
+
+Nesta etapa do projeto, foram feitas correções e ajustes importantes para que o sistema de notícias funcionasse corretamente.
+
+Primeiro, foram organizadas as rotas do sistema, garantindo que as páginas de cadastro, login e notícias fossem acessadas sem erro. Também foi corrigido o redirecionamento após o login, fazendo com que o usuário fosse levado corretamente para a página inicial de notícias.
+
+Em seguida, foram corrigidos problemas entre o formulário de cadastro de notícias, as views e o banco de dados. Após ajustar o model e recriar o banco, o erro que impedia o salvamento das notícias foi resolvido, permitindo o cadastro sem falhas.
+
+Também foi corrigida a exibição das notícias na tela inicial, ajustando a variável usada no template para que as notícias cadastradas aparecessem corretamente na lista.
+
+Por fim, foi iniciado o controle de permissões do sistema. Foi definido que apenas usuários com permissão adequada podem editar notícias, sem a necessidade de serem superusuários. O botão de edição foi adicionado na tela inicial e aparece somente para usuários autorizados.
+
+Com isso, o sistema passou a permitir cadastro, login, criação, visualização e edição de notícias de forma organizada e segura, deixando o projeto pronto para continuar evoluindo.
+
+
+# ✅ RESULTADO NA TELA
+
+- ✔ Usuário SEM permissão → não vê o botão
+- ✔ Usuário COM permissão → vê ✏️ Editar
+- ✔ Superuser → vê sempre
