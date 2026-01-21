@@ -61,7 +61,7 @@ A tela de métricas é restrita aos coordenadores e apresenta:
 Essa tela auxilia o coordenador na análise de engajamento e na tomada de decisão editorial.
 Também foi adicionado um botão de “Voltar”, facilitando a navegação de retorno à tela principal.
 
-##👤 Tela de Perfil
+# 👤 Tela de Perfil
 A tela de perfil permite que o usuário:
 -visualize e edite seus dados pessoais,
 -altere informações da conta, como nome e e-mail,
