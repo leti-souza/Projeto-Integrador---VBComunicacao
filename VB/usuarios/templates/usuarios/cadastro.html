@@ -12,10 +12,10 @@
     <div class="card shadow p-4" style="width: 450px;">
         <h3 class="text-center mb-4">VB Comunicação - Cadastro</h3>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger">{{ message }}</div>
-            {% endfor %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
         {% endif %}
 
         <form method="post" action="{% url 'cadastro' %}">
@@ -23,31 +23,46 @@
 
             <div class="mb-3">
                 <label class="form-label">Usuário</label>
-                <input type="text" name="username" class="form-control" required>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sobrenome</label>
+                {{ form.last_name }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                {{ form.email }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label">CPF</label>
-                <input type="text" name="cpf" class="form-control" maxlength="11" required>
+                {{ form.cpf }}
+                {{ form.cpf.errors }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Função</label>
-                <select name="tipo" class="form-control" required>
-                    <option value="">Selecione</option>
-                    <option value="jornalista">Jornalista</option>
-                    <option value="coordenador">Coordenador</option>
-                </select>
+                {{ form.tipo }}
+                {{ form.tipo.errors }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Senha</label>
-                <input type="password" name="password1" class="form-control" required>
+                {{ form.password1 }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Confirmar Senha</label>
-                <input type="password" name="password2" class="form-control" required>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
             </div>
 
             <button type="submit" class="btn btn-success w-100">
@@ -59,10 +74,16 @@
 
         <p class="text-center">
             Já tem conta?
-            <a href="{% url 'login' %}">Voltar para login</a>
+           <a href="{% url 'login' %}">Voltar para login</a>
         </p>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll("input, select").forEach(el => {
+        el.classList.add("form-control");
+    });
+</script>
 
 </body>
 </html>

@@ -9,10 +9,13 @@
 
     <textarea name="conteudo" required>{{ noticia.conteudo }}</textarea>
 
-    <label>
-        <input type="checkbox" name="confiavel" {% if noticia.confiavel %}checked{% endif %}>
-        Fonte confiável
-    </label>
+    {% if request.user.groups.all.0.name == 'Coordenador' %}
+        <label>
+            <input type="checkbox" name="confiavel"
+                   {% if noticia.confiavel %}checked{% endif %}>
+            Fonte confiável
+        </label>
+    {% endif %}
 
     <button type="submit">Salvar alterações</button>
 </form>

@@ -11,42 +11,113 @@
 <nav class="navbar navbar-dark bg-dark mb-4">
     <div class="container-fluid">
         <span class="navbar-brand">📰 VB Comunicação - Site de Notícias</span>
-        <span class="text-white">
-            {{ request.user.username }}
-        </span>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- ✅ Usuário + tipo -->
+            <span class="text-white me-2">
+                {{ email_usuario }}
+                {% if tipo_usuario %}
+                    <span class="badge bg-secondary text-uppercase ms-2">
+                        {{ tipo_usuario }}
+                    </span>
+                {% endif %}
+            </span>
+
+            <!-- ✅ Perfil (abre a página de perfil) -->
+            <a href="{% url 'perfil' %}" class="btn btn-outline-light btn-sm">
+                👤 Perfil
+            </a>
+
+            <!-- ✅ Métricas (só coordenador) - opcional -->
+            {% if is_coordenador %}
+                <a href="{% url 'metricas' %}" class="btn btn-outline-info btn-sm">
+                    📊 Métricas
+                </a>
+            {% endif %}
+
+            <!-- ✅ Favoritos (só jornalista) -->
+            {% if is_jornalista %}
+                <a href="{% url 'noticias_favoritas' %}" class="btn btn-outline-warning btn-sm">
+                    ⭐ Favoritos
+                </a>
+            {% endif %}
+
+            <!-- ✅ Logout -->
+            <form method="post" action="{% url 'logout' %}" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    ➜ logout
+                </button>
+            </form>
+        </div>
     </div>
 </nav>
 
 <div class="container">
 
-   {% for noticia in page_obj %}
+    <!-- ✅ Busca -->
+    <form method="get" class="d-flex mb-4">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            class="form-control me-2"
+            placeholder="Buscar notícias..."
+        >
+        <button class="btn btn-outline-secondary" type="submit">
+            🔍
+        </button>
+    </form>
+
+    {% for noticia in page_obj %}
         <div class="card mb-3 shadow-sm">
             <div class="card-body">
 
-                <h4>{{ noticia.titulo }}</h4>
-                <p class="text-muted">
-                    Fonte: {{ noticia.fonte }}
-                </p>
+                <h4>
+                    <a href="{% url 'detalhe_noticia' noticia.id %}">
+                        {{ noticia.titulo }}
+                    </a>
+                </h4>
 
                 <p>{{ noticia.conteudo }}</p>
 
-                <a href="{{ noticia.link }}" target="_blank" class="btn btn-primary btn-sm">
-                    Ler fonte original
-                </a>
-
-                {% if noticia.confiavel %}
-                    <span class="badge bg-success ms-2">Confiável</span>
+                <!-- ✅ Badge de confiabilidade -->
+                {% if noticia.confiavel == True %}
+                    <span class="badge bg-success">Confiável</span>
+                {% elif noticia.confiavel == False %}
+                    <span class="badge bg-danger">Não confiável</span>
                 {% else %}
-                    <span class="badge bg-danger ms-2">Não confiável</span>
+                    <span class="badge bg-warning text-dark">Não avaliada</span>
                 {% endif %}
 
-                {% if perms.noticias.change_noticia %}
-                <a href="{% url 'editar_noticia' noticia.id %}"
-                   class="btn btn-warning btn-sm ms-2">
-                    ✏️ Editar
-                </a>
-            {% endif %}
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                    {% if noticia.link %}
+                        <a href="{{ noticia.link }}" target="_blank" class="btn btn-primary btn-sm">
+                            Ler fonte original
+                        </a>
+                    {% endif %}
 
+                    <!-- ✅ Favoritar (só jornalista) -->
+                    {% if is_jornalista %}
+                        {% if noticia.id in favoritos_ids %}
+                            <a href="{% url 'alternar_favorito' noticia.id %}" class="btn btn-warning btn-sm">
+                                ★ Favoritada (remover)
+                            </a>
+                        {% else %}
+                            <a href="{% url 'alternar_favorito' noticia.id %}" class="btn btn-outline-warning btn-sm">
+                                ☆ Favoritar
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- ✅ Editar (só coordenador) -->
+                    {% if is_coordenador %}
+                        <a href="{% url 'editar_noticia' noticia.id %}" class="btn btn-warning btn-sm">
+                            ✏️ Editar notícia
+                        </a>
+                    {% endif %}
+                </div>
 
             </div>
         </div>
@@ -56,20 +127,34 @@
         </div>
     {% endfor %}
 
+    <!-- Paginação -->
+    <nav class="mt-4">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Próxima</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+
 </div>
 
 </body>
 </html>
-
-<form method="get" class="d-flex mb-4">
-    <input
-        type="text"
-        name="q"
-        value="{{ query }}"
-        class="form-control me-2"
-        placeholder="Buscar notícias..."
-    >
-    <button class="btn btn-outline-secondary" type="submit">
-        🔍
-    </button>
-</form>

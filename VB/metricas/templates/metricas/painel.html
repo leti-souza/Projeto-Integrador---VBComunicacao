@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Métricas</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <span class="navbar-brand">📊 VB Comunicação — Painel de Métricas</span>
+        <span class="text-white">
+            {{ request.user.username }}
+        </span>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- CARDS DE RESUMO -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-bg-primary shadow">
+                <div class="card-body text-center">
+                    <h5>Total de Notícias</h5>
+                    <h2>{{ ranking|length }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-bg-success shadow">
+                <div class="card-body text-center">
+                    <h5>Mais acessada</h5>
+                    {% if ranking %}
+                        <strong>{{ ranking.0.titulo }}</strong>
+                    {% else %}
+                        Nenhuma
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-bg-warning shadow">
+                <div class="card-body text-center">
+                    <h5>Status</h5>
+                    Painel ativo
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABELA DE NOTÍCIAS MAIS ACESSADAS -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-dark text-white">
+            🔥 Notícias mais acessadas
+        </div>
+
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Título</th>
+                        <th class="text-center">Acessos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for noticia in ranking %}
+                    <tr>
+                        <td>{{ noticia.titulo }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-primary">
+                                {{ noticia.visualizacoes }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            Nenhuma notícia registrada.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div class="card shadow">
+    <div class="card-header bg-warning">
+        📌 Pauta — Notícias pendentes de validação
+    </div>
+
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Título</th>
+                    <th>Fonte</th>
+                    <th class="text-center">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for noticia in pauta %}
+                <tr>
+                    <td>{{ noticia.titulo }}</td>
+                    <td>{{ noticia.fonte }}</td>
+                    <td class="text-center">
+
+                        <a href="{% url 'validar_noticia' noticia.id %}?acao=confiavel"
+                           class="btn btn-success btn-sm">
+                            ✔ Confiável
+                        </a>
+
+                        <a href="{% url 'validar_noticia' noticia.id %}?acao=nao"
+                           class="btn btn-danger btn-sm ms-1">
+                            ✖ Não confiável
+                        </a>
+
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">
+                        Nenhuma notícia pendente 🎉
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</a>
+</a>
+</a>
+<a href="{% url 'home' %}" class="btn btn-secondary btn-sm">
+    ⬅ Voltar
+</a>
+</div>
+
+</body>
+</html>

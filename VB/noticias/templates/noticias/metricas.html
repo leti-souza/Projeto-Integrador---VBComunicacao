@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Métricas{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📊 Métricas do Sistema</h2>
+
+<div class="mb-3">
+    <a href="{% url 'home' %}" class="btn btn-secondary">
+        ⬅ Voltar
+    </a>
+</div>
+
+<!-- RANKING -->
+<h4>🏆 Ranking de Notícias Mais Acessadas</h4>
+<div class="list-group mb-5">
+    {% for noticia in ranking %}
+    <div class="list-group-item d-flex justify-content-between">
+        <span>{{ forloop.counter }}. {{ noticia.titulo }}</span>
+        <span>{{ noticia.visualizacoes }} acessos</span>
+    </div>
+    {% empty %}
+    <div class="list-group-item">Nenhuma notícia registrada.</div>
+    {% endfor %}
+</div>
+
+<h4 class="mt-5">⭐ Notícias mais favoritedas pelos jornalistas</h4>
+
+<div class="list-group mb-4">
+    {% for noticia in favoritas %}
+        <div class="list-group-item d-flex justify-content-between">
+            <span>{{ noticia.titulo }}</span>
+            <span class="badge bg-warning text-dark">
+                ⭐ {{ noticia.total_favoritos }} favoritadas
+            </span>
+        </div>
+    {% empty %}
+        <div class="list-group-item">
+            Nenhuma notícia foi favoritada ainda.
+        </div>
+    {% endfor %}
+</div>
+
+<h4>👥 Atividade dos jornalistas (favoritos)</h4>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Jornalista</th>
+            <th>Notícia</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fav in favoritos_detalhe %}
+        <tr>
+            <td>{{ fav.usuario.username }}</td>
+            <td>{{ fav.noticia.titulo }}</td>
+            <td>{{ fav.criado_em|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">Nenhum favorito registrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- PAUTA -->
+<h4>🗂️ Pauta (Notícias Pendentes)</h4>
+
+<div class="row">
+    {% for noticia in pauta %}
+    <div class="col-md-6">
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5>{{ noticia.titulo }}</h5>
+                <p>{{ noticia.conteudo|truncatewords:30 }}</p>
+
+                <div class="d-flex gap-2">
+                    <a
+                      href="{% url 'definir_confiabilidade' noticia.id 'confiavel' %}"
+                      class="btn btn-success btn-sm">
+                        ✅ Marcar como confiável
+                    </a>
+
+                    <a
+                      href="{% url 'definir_confiabilidade' noticia.id 'nao_confiavel' %}"
+                      class="btn btn-danger btn-sm">
+                        ❌ Não confiável
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Nenhuma notícia pendente.</p>
+    {% endfor %}
+</div>
+{% endblock %}

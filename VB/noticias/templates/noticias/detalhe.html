@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ noticia.titulo }}{% endblock %}
+
+{% block content %}
+
+<h1>{{ noticia.titulo }}</h1>
+
+<p><strong>Fonte:</strong> {{ noticia.fonte }}</p>
+
+<p>{{ noticia.conteudo }}</p>
+
+<a href="{{ noticia.link }}" target="_blank">
+    Ler fonte original
+</a>
+
+<p>👁️ {{ noticia.acessos }} acessos</p>
+
+<a href="{% url 'home' %}" class="btn btn-secondary btn-sm">
+    ⬅ Voltar
+</a>
+
+{% endblock %}
+
+
