@@ -116,6 +116,10 @@
                         <a href="{% url 'editar_noticia' noticia.id %}" class="btn btn-warning btn-sm">
                             ✏️ Editar notícia
                         </a>
+
+                        <a href="{% url 'deletar_noticia' noticia.id %}" class="btn btn-danger btn-sm">
+                            🗑 Deletar
+                        </a>
                     {% endif %}
                 </div>
 

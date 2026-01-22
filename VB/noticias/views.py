@@ -107,6 +107,25 @@ def editar_noticia(request, id):
 
     return render(request, 'noticias/editar_noticia.html', {'noticia': noticia})
 
+# =========================
+# DELETAR NOTÍCIA
+# =========================
+
+@login_required
+def deletar_noticia(request, id):
+    if not is_coordenador(request.user):
+        return HttpResponseForbidden('Acesso negado')
+
+    noticia = get_object_or_404(Noticia, id=id)
+
+    if request.method == 'POST':
+        noticia.delete()
+        return redirect('home')
+
+    return render(request, 'noticias/confirmar_delete.html', {
+        'noticia': noticia
+    })
+
 
 # =========================
 # HOME

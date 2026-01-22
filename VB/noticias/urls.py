@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     alternar_favorito,
+    deletar_noticia,
     home,
     criar_noticia,
     editar_noticia,
@@ -17,6 +18,8 @@ urlpatterns = [
     path('detalhe/<int:id>/', detalhe_noticia, name='detalhe_noticia'),
     path('favoritar/<int:noticia_id>/', alternar_favorito, name='alternar_favorito'),
     path('favoritos/', noticias_favoritas, name='noticias_favoritas'),
+    path('deletar/<int:id>/', deletar_noticia, name='deletar_noticia'),
+    
     
 
     # MÉTRICAS
